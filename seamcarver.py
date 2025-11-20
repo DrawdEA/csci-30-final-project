@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from PIL import Image
 from picture import Picture
 import math
 
@@ -106,6 +107,13 @@ class SeamCarver(Picture):
         Return a sequence of indices representing the lowest-energy
         horizontal seam
         '''
+        img = self.picture()
+        transposed_img = SeamCarver(img.transpose(Image.ROTATE_270))
+        vertical_seam = transposed_img.find_vertical_seam() 
+        horizontal_seam = []
+        for i in vertical_seam:
+            horizontal_seam.append(self._height - i)
+        return horizontal_seam
         raise NotImplementedError
 
     def remove_vertical_seam(self, seam: list[int]):
@@ -123,7 +131,7 @@ class SeamCarver(Picture):
         '''
         Remove a horizontal seam from the picture
         '''
-        raise NotImplementedError
+        # raise NotImplementedError
 
 class SeamError(Exception):
     pass
