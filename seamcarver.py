@@ -15,6 +15,10 @@ class SeamCarver(Picture):
         Since there is no pixel (i, j−1) we wrap around and use the corresponding pixel from the bottom
         row of the image, thus performing calculations based on pixel (i, j + 1) and pixel (i, H − 1).
         '''
+        # Validate indices
+        if i < 0 or i >= self._width or j < 0 or j >= self._height:
+            raise IndexError
+        
         #edges
         w, h = self._width, self._height
 
@@ -117,6 +121,17 @@ class SeamCarver(Picture):
         '''
         Remove a vertical seam from the picture
         '''
+        # Validate width, seam length, and seam values and continuity
+        if self._width == 1:
+            raise SeamError
+        if len(seam) != self._height:
+            raise SeamError
+        for j in range(self._height):
+            if seam[j] < 0 or seam[j] >= self._width:
+                raise SeamError
+            if j > 0 and abs(seam[j] - seam[j-1]) > 1:
+                raise SeamError
+        
         for j in range(self._height):
                 for i in range(seam[j], self._width-1):
                     self[i,j] = self[i+1, j]
@@ -127,6 +142,17 @@ class SeamCarver(Picture):
         '''
         Remove a horizontal seam from the picture
         '''
+        # Validate height, seam length, and seam values and continuity
+        if self._height == 1:
+            raise SeamError
+        if len(seam) != self._width:
+            raise SeamError
+        for i in range(self._width):
+            if seam[i] < 0 or seam[i] >= self._height:
+                raise SeamError
+            if i > 0 and abs(seam[i] - seam[i-1]) > 1:
+                raise SeamError
+        
         img = self.picture()
 
         # transpose image to vertical seam
