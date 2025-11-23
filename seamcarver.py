@@ -107,7 +107,7 @@ class SeamCarver(Picture):
         '''
         img = self.picture()
         transposed_img = SeamCarver(img.transpose(Image.ROTATE_270))
-        vertical_seam = transposed_img.find_vertical_seam() 
+        vertical_seam = transposed_img.find_vertical_seam()
         horizontal_seam = []
         for i in vertical_seam:
             horizontal_seam.append(self._height - i)
@@ -133,7 +133,7 @@ class SeamCarver(Picture):
         transposed_img = SeamCarver(img.transpose(Image.ROTATE_270))
 
         # remove vertical seam and transpose back to horizontal seam
-        transposed_img.remove_vertical_seam([self._height - j for j in seam])
+        transposed_img.remove_vertical_seam([self._height-1 - j for j in seam])
         result_carver = SeamCarver(transposed_img.picture().transpose(Image.ROTATE_90))
 
         # update self with result
