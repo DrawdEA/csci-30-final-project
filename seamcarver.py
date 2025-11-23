@@ -35,7 +35,6 @@ class SeamCarver(Picture):
         yHorizontal = (R_y)**2 + (G_y)**2 + (B_y)**2
 
         return math.sqrt(xHorizontal + yHorizontal)
-        raise NotImplementedError
 
     def find_vertical_seam(self) -> list[int]:
         '''
@@ -100,7 +99,6 @@ class SeamCarver(Picture):
 
         seam.reverse()
         return seam
-        raise NotImplementedError
 
     def find_horizontal_seam(self) -> list[int]:
         '''
@@ -114,7 +112,6 @@ class SeamCarver(Picture):
         for i in vertical_seam:
             horizontal_seam.append(self._height - i)
         return horizontal_seam
-        raise NotImplementedError
 
     def remove_vertical_seam(self, seam: list[int]):
         '''
@@ -125,13 +122,24 @@ class SeamCarver(Picture):
                     self[i,j] = self[i+1, j]
                 del(self[self._width-1, j])
         self._width-=1
-        # raise NotImplementedError
 
     def remove_horizontal_seam(self, seam: list[int]):
         '''
         Remove a horizontal seam from the picture
         '''
-        # raise NotImplementedError
+        img = self.picture()
+
+        # transpose image to vertical seam
+        transposed_img = SeamCarver(img.transpose(Image.ROTATE_270))
+
+        # remove vertical seam and transpose back to horizontal seam
+        transposed_img.remove_vertical_seam([self._height - j for j in seam])
+        result_carver = SeamCarver(transposed_img.picture().transpose(Image.ROTATE_90))
+
+        # update self with result
+        self.clear()
+        self.update(result_carver)
+        self._width, self._height = result_carver._width, result_carver._height
 
 class SeamError(Exception):
     pass
