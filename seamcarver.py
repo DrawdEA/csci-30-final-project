@@ -18,7 +18,7 @@ class SeamCarver(Picture):
         # Validate indices
         if i < 0 or i >= self._width or j < 0 or j >= self._height:
             raise IndexError
-        
+
         #edges
         w, h = self._width, self._height
 
@@ -114,7 +114,7 @@ class SeamCarver(Picture):
         vertical_seam = transposed_img.find_vertical_seam()
         horizontal_seam = []
         for i in vertical_seam:
-            horizontal_seam.append(self._height - i)
+            horizontal_seam.append(self._height-1 - i)
         return horizontal_seam
 
     def remove_vertical_seam(self, seam: list[int]):
@@ -131,7 +131,7 @@ class SeamCarver(Picture):
                 raise SeamError
             if j > 0 and abs(seam[j] - seam[j-1]) > 1:
                 raise SeamError
-        
+
         for j in range(self._height):
                 for i in range(seam[j], self._width-1):
                     self[i,j] = self[i+1, j]
@@ -152,7 +152,7 @@ class SeamCarver(Picture):
                 raise SeamError
             if i > 0 and abs(seam[i] - seam[i-1]) > 1:
                 raise SeamError
-        
+
         img = self.picture()
 
         # transpose image to vertical seam
